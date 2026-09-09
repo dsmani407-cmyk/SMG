@@ -1,0 +1,6 @@
+{
+  "name": "Smart Group",
+  "description": "Smart Group Distributor & Team Management CRM for daily tasks, 5 ad sources, 20 call tracking, guest scheduling, ₹150 file registration, L2 counselling limits, seniority temporary IDs, 3x L3 follow-ups, and sales closing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

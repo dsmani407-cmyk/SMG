@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#1E3A8A" />
+  <meta name="description" content="Smart Group CRM - Candidate pipeline and distributor management application" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Smart Group" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <title>Smart Group CRM</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0F172A;
+      color: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 20px;
+      text-align: center;
+    }
+    .card {
+      background: #1E293B;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .logo-badge {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 16px auto;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #FFFFFF;
+    }
+    p {
+      font-size: 14px;
+      color: #94A3B8;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      border: none;
+      margin-bottom: 12px;
+    }
+    .btn-primary {
+      background: #2563EB;
+      color: #FFFFFF;
+    }
+    .btn-primary:active {
+      background: #1D4ED8;
+    }
+    .btn-secondary {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(5, 150, 105, 0.2);
+      color: #34D399;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="/icon-192.png" alt="Smart Group Logo" style="width: 72px; height: 72px; border-radius: 16px; margin: 0 auto 16px auto; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.3);" />
+    <div class="status-pill">● Android & PWA Ready</div>
+    <h1>Smart Group CRM</h1>
+    <p>Distributor Candidate Pipeline, Seniority & Sales Tracking System optimized for Android smartphones.</p>
+    <button id="installPwaBtn" class="btn btn-primary">📲 Install App (Add to Home Screen)</button>
+    <button class="btn btn-secondary" onclick="alert('Android Chrome / Samsung Internet:\n1. Tap the three dots menu (⋮) at top right.\n2. Tap \'Install App\' or \'Add to Home screen\'.\n3. Tap \'Install\' to confirm.')">ℹ️ Installation Guide</button>
+  </div>
+
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js');
+      });
+    }
+
+    // PWA Install Prompt
+    let deferredPrompt;
+    const installBtn = document.getElementById('installPwaBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      installBtn.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log('User response to install prompt:', outcome);
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+      } else {
+        alert('To install on Android:\nTap browser menu (⋮) at top right, then select \'Install App\' or \'Add to Home screen\'.');
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      console.log('Smart Group CRM installed successfully');
+      installBtn.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
